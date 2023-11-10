@@ -8,8 +8,7 @@ import time
 import numpy as np
 from tqdm import tqdm
 import cv2
-from deepface.basemodels import VGGFace, OpenFace, Facenet, Facenet512, FbDeepFace, DeepID, DlibWrapper, ArcFace, Boosting
-from deepface.extendedmodels import Age, Gender, Race, Emotion
+from deepface.basemodels import Facenet
 from deepface.commons import functions, realtime, distance as dst
 
 import tensorflow as tf
@@ -24,9 +23,7 @@ def build_model(model_name):
 	This function builds a deepface model
 	Parameters:
 		model_name (string): face recognition or facial attribute model
-			VGG-Face, Facenet, OpenFace, DeepFace, DeepID for face recognition
-			Age, Gender, Emotion, Race for facial attributes
-
+			Facenet
 	Returns:
 		built deepface model
 	"""
@@ -34,18 +31,7 @@ def build_model(model_name):
 	global model_obj #singleton design pattern
 
 	models = {
-		'VGG-Face': VGGFace.loadModel,
-		'OpenFace': OpenFace.loadModel,
 		'Facenet': Facenet.loadModel,
-		'Facenet512': Facenet512.loadModel,
-		'DeepFace': FbDeepFace.loadModel,
-		'DeepID': DeepID.loadModel,
-		'Dlib': DlibWrapper.loadModel,
-		'ArcFace': ArcFace.loadModel,
-		'Emotion': Emotion.loadModel,
-		'Age': Age.loadModel,
-		'Gender': Gender.loadModel,
-		'Race': Race.loadModel
 	}
 
 	if not "model_obj" in globals():
@@ -75,30 +61,19 @@ def verify(img1_path, img2_path = '', model_name = None, distance_metric = "eucl
 			['img2.jpg', 'img3.jpg']
 		]
 
-		model_name (string): VGG-Face, Facenet, OpenFace, DeepFace, DeepID, Dlib, ArcFace or Ensemble
+		model_name (string): Facenet
 
 		distance_metric (string): cosine, euclidean, euclidean_l2
 
-		model: Built deepface model. A face recognition model is built every call of verify function. You can pass pre-built face recognition model optionally if you will call verify function several times.
-
-			model = DeepFace.build_model('VGG-Face')
-
 		enforce_detection (boolean): If any face could not be detected in an image, then verify function will return exception. Set this to False not to have this exception. This might be convenient for low resolution images.
 
-		detector_backend (string): set face detector backend as retinaface, mtcnn, opencv, ssd or dlib
+		detector_backend (string): retinaface
 
 		prog_bar (boolean): enable/disable a progress bar
 
 	Returns:
-		Verify function returns a dictionary. If img1_path is a list of image pairs, then the function will return list of dictionary.
+		Verify function returns a dictionary
 
-		{
-			"verified": True
-			, "distance": 0.2563
-			, "max_threshold_to_verify": 0.40
-			, "model": "VGG-Face"
-			, "similarity_metric": "cosine"
-		}
 
 	"""
 
@@ -112,7 +87,7 @@ def verify(img1_path, img2_path = '', model_name = None, distance_metric = "eucl
 	#--------------------------------
 
 	if model_name == 'Ensemble':
-		model_names = ["VGG-Face", "Facenet", "OpenFace", "DeepFace"]
+		model_names = ["Facenet"]
 		metrics = ["cosine", "euclidean", "euclidean_l2"]
 	else:
 		model_names = []; metrics = []
@@ -194,15 +169,11 @@ def represent(img_path, model_name = None, model = None, enforce_detection = Tru
 	Parameters:
 		img_path: exact image path, numpy array (BGR) or based64 encoded images could be passed.
 
-		model_name (string): VGG-Face, Facenet, OpenFace, DeepFace, DeepID, Dlib, ArcFace.
-
-		model: Built deepface model. A face recognition model is built every call of verify function. You can pass pre-built face recognition model optionally if you will call verify function several times. Consider to pass model if you are going to call represent function in a for loop.
-
-			model = DeepFace.build_model('VGG-Face')
+		model_name (string):Facenet
 
 		enforce_detection (boolean): If any face could not be detected in an image, then verify function will return exception. Set this to False not to have this exception. This might be convenient for low resolution images.
 
-		detector_backend (string): set face detector backend as retinaface, mtcnn, opencv, ssd or dlib
+		detector_backend (string): retinaface
 
 		normalization (string): normalize the input image before feeding to model
 
