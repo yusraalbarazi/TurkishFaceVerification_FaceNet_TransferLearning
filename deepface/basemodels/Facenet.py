@@ -552,23 +552,23 @@ def InceptionResNetV2(dimension = 128):
 
 #url = 'https://drive.google.com/uc?id=1971Xk5RwedbudGgTIrGAL4F7Aifu7id1'
 
-def loadModel(url = 'https://github.com/serengil/deepface_models/releases/download/v1.0/facenet_weights.h5'):
-	model = InceptionResNetV2()
+def loadModel():
+    model = InceptionResNetV2()
+    home = functions.get_deepface_home()
 
-	#-----------------------------------
+    if os.path.isfile(home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5') != True:
+        print("facenet_weights.h5 will be downloaded...")
+        # Google Drive file ID
+        file_id = '1Bf9oPDJL3h3uljgSRQONyTih8I6FkSeU'
 
-	home = functions.get_deepface_home()
+        # Output file name
+        output_file = 'facenet_weights.h5'
 
-	if os.path.isfile(home+'/.deepface/weights/facenet_weights.h5') != True:
-		print("facenet_weights.h5 will be downloaded...")
-
-		output = home+'/.deepface/weights/facenet_weights.h5'
-		gdown.download(url, output, quiet=False)
-
-	#-----------------------------------
-
-	model.load_weights(home+'/.deepface/weights/facenet_weights.h5')
-
-	#-----------------------------------
-
-	return model
+        # Download the file
+        url = f'https://drive.google.com/uc?id={file_id}'
+        output = home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5
+        gdown.download(url, output_file, quiet=False)
+        
+    model.load_weights(home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity')
+    
+    return model
