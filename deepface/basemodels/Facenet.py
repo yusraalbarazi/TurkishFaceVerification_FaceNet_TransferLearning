@@ -563,7 +563,7 @@ def loadModel():
 
         # Download the file
         url = f'https://drive.google.com/uc?id={file_id}'
-        output_file = home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5
+        output_file = home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5'
         gdown.download(url, output_file, quiet=False)
         
     model.load_weights(home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity')
