@@ -561,12 +561,9 @@ def loadModel():
         # Google Drive file ID
         file_id = '1Bf9oPDJL3h3uljgSRQONyTih8I6FkSeU'
 
-        # Output file name
-        output_file = 'facenet_weights.h5'
-
         # Download the file
         url = f'https://drive.google.com/uc?id={file_id}'
-        output = home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5
+        output_file = home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity.h5
         gdown.download(url, output_file, quiet=False)
         
     model.load_weights(home+'/.deepface/weights/Re-TrainedFaceNetModel&Weights_IstanbulTechnicalUniversity')
